@@ -28,10 +28,9 @@ module FastJsonapi
       set_type(reflected_record_type) if reflected_record_type
     end
 
-    def initialize(resource, simple_attributes = false, options = {})
+    def initialize(resource, options = {})
       process_options(options)
 
-      @simple_attributes = simple_attributes
       @resource = resource
     end
 
