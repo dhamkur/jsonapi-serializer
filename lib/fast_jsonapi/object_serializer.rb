@@ -53,7 +53,7 @@ module FastJsonapi
       serializable_hash[:data] = self.class.record_hash(@resource, @fieldsets[self.class.record_type.to_sym], @includes, @params)
       serializable_hash[:included] = self.class.get_included_records(@resource, @includes, @known_included_objects, @fieldsets, @params) if @includes.present?
 
-      if self.class::SIMPLE_ATTRIBUTES?
+      if SIMPLE_ATTRIBUTES?
         simple_attributes = {
           data: serializable_hash[:data][:attributes],
           relationships: serializable_hash[:included]
@@ -74,7 +74,7 @@ module FastJsonapi
         included.concat self.class.get_included_records(record, @includes, @known_included_objects, @fieldsets, @params) if @includes.present?
       end
 
-      if self.class::SIMPLE_ATTRIBUTES?
+      if SIMPLE_ATTRIBUTES?
         serializable_hash[:data] = data
         serializable_hash[:included] = included if @includes.present?
         serializable_hash[:meta] = @meta if @meta.present?
