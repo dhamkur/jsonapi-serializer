@@ -27,10 +27,9 @@ module FastJsonapi
       set_type(reflected_record_type) if reflected_record_type
     end
 
-    def initialize(resource, simplified = true, options = {})
+    def initialize(resource, options = {})
       process_options(options)
 
-      @simplified = simplified
       @resource = resource
     end
 
@@ -52,15 +51,12 @@ module FastJsonapi
 
       serializable_hash[:data] = self.class.record_hash(@resource, @fieldsets[self.class.record_type.to_sym], @includes, @params)
       serializable_hash[:included] = self.class.get_included_records(@resource, @includes, @known_included_objects, @fieldsets, @params) if @includes.present?
+      simple_attributes = {
+        data: serializable_hash[:data][:attributes],
+        relationships: serializable_hash[:included]
+      }
 
-      if @simplified?
-        simple_attributes = {
-          data: serializable_hash[:data][:attributes],
-          relationships: serializable_hash[:included]
-        }
-      else
-        serializable_hash
-      end
+      simple_attributes
     end
 
     def hash_for_collection
@@ -78,15 +74,12 @@ module FastJsonapi
       serializable_hash[:included] = included if @includes.present?
       serializable_hash[:meta] = @meta if @meta.present?
       serializable_hash[:links] = @links if @links.present?
+      simple_attributes = {
+        data: serializable_hash[:data][:attributes],
+        relationships: serializable_hash[:included]
+      }
 
-      if @@simplified?
-        simple_attributes = {
-          data: serializable_hash[:data][:attributes],
-          relationships: serializable_hash[:included]
-        }
-      else
-        serializable_hash
-      end
+      simple_attributes
     end
 
     private
