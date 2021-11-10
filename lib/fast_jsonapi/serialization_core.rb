@@ -71,15 +71,12 @@ module FastJsonapi
           record_hash = cache_store_instance.fetch(record, **cache_opts) do
             temp_hash = {}
             temp_hash = attributes_hash(record, fieldset, params) if attributes_to_serialize.present?
-            temp_hash = relationships_hash(record, cachable_relationships_to_serialize, fieldset, includes_list, params) if cachable_relationships_to_serialize.present?
             temp_hash[:links] = links_hash(record, params) if data_links.present?
             temp_hash
           end
-          record_hash[:relationships] = (record_hash[:relationships] || {}).merge(relationships_hash(record, uncachable_relationships_to_serialize, fieldset, includes_list, params)) if uncachable_relationships_to_serialize.present?
         else
           record_hash = {}
           record_hash = attributes_hash(record, fieldset, params) if attributes_to_serialize.present?
-          record_hash = relationships_hash(record, nil, fieldset, includes_list, params) if relationships_to_serialize.present?
           record_hash[:links] = links_hash(record, params) if data_links.present?
         end
 
