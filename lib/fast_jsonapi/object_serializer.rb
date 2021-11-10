@@ -75,7 +75,7 @@ module FastJsonapi
       serializable_hash[:meta] = @meta if @meta.present?
       serializable_hash[:links] = @links if @links.present?
       simple_attributes = {
-        data: serializable_hash[:data][0][:attributes],
+        data: serializable_hash[:data][:attributes],
         relationships: serializable_hash[:included]
       }
 
